@@ -1,0 +1,65 @@
+﻿@model IEnumerable<WebApp.Models.ProductInfo>
+@{
+    ViewBag.Title = "MyCart";
+}
+
+@{
+    int sum = 0;
+}
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script type="text/javascript">
+    function SaveData() {
+        var urlAction='/Account/SaveOrderDetails'
+        $.ajax({
+        type: 'GET',
+        url: urlAction
+    });
+    }
+</script>
+<div id="dvContents">
+    <table class="table table-hover" width="100%">
+        <thead>
+            @*<img src="~/Templates/Header.jpg" width="100%" height="70px" />*@
+            <tr>
+                <th>SlNO</th>
+                <th>Mobile Name</th>
+                <th>Image</th>
+                <th>Price</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var x in Model)
+            {
+                <tr>
+                    <td>@x.slno</td>
+                    <td>@x.Product_Name</td>
+                    <td>
+                        <img id="img1" src="~/Images/@x.Url" height="100" width="75" />
+                    </td>
+                    <td> ₹@x.Price</td>
+                    @*<td>
+                            <button id="btn_delete" class="label label-primary" data - slno="@x.slno"
+                                    onclick="location.href='@Url.Action("Remove ","AddToCart ",x)'">
+                                <img src="~/Icons/delete.png" height="30" width="30" />
+                            </button>
+                        </td>*@
+                </tr>
+            }
+        </tbody>
+        @foreach (var x in Model)
+        {
+            sum = Convert.ToInt32(x.Price) + sum;
+        }
+        <tfoot> <tr> <td> </td>   <td> </td>   <td> <b> Total </b></td> <td> ₹@sum </td>   </tr>   </tfoot>
+    </table>
+    @*<div id="footer">
+            <img src="~/Templates/Footer.jpg" width="100%" height="60px" />
+        </div>
+        <button type="button" id="btnPrint" class="btn btn-primary">Print</button>
+        <button type="button" class="btn btn-success"> Continue Shopping </button>*@
+    @*<button type="button" class="btn btn-warning"> Place Order </button>*@
+    <input type="button" value="Place Order" class="btn btn-warning" onclick="SaveData()"/>
+</div>
